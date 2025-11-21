@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagina Effetti Speciali</title>
+    <style>
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        button {
+            display: block;
+            margin: 30px auto;
+            padding: 15px 30px;
+            font-size: 18px;
+            background-color: darkorange;
+            color: GhostWhite;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        button:hover {
+            background-color: #ff8c00;
+            transform: scale(1.05);
+        }
+        #surprise {
+            display: none;
+            text-align: center;
+            font-size: 36px;
+            font-weight: bold;
+            color: darkorange;
+            margin: 30px 0;
+        }
+        #drawingArea {
+            display: none;
+            text-align: center;
+            margin: 30px 0;
+        }
+        pre {
+            background-color: #f0f0f0;
+            padding: 20px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: darkorange;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Pagina Effetti Speciali</h1>
+        
+        <button id="mainButton">Testo a Sorpresa</button>
+        
+        <div id="surprise">PEPPEREPE</div>
+        
+        <div id="drawingArea">
+            <h2>Triangolo:</h2>
+            <pre id="triangle"></pre>
+            <h2>Rombo:</h2>
+            <pre id="diamond"></pre>
+        </div>
+        
+        <a href="index.html">← Torna alla Home</a>
+    </div>
+
+    <script>
+        let state = 0;
+        const squareSize = 2; // Larghezza modificabile dei quadratini
+        
+        const mainButton = document.getElementById('mainButton');
+        const surpriseDiv = document.getElementById('surprise');
+        const drawingArea = document.getElementById('drawingArea');
+        const triangleArea = document.getElementById('triangle');
+        const diamondArea = document.getElementById('diamond');
+
+        // Funzione per disegnare il triangolo
+        function drawTriangle() {
+            let triangle = '';
+            for (let i = 1; i <= 5; i++) {
+                for (let j = 0; j < i; j++) {
+                    triangle += '■ ';
+                }
+                triangle += '\n';
+            }
+            return triangle;
+        }
+
+        // Funzione per disegnare il rombo
+        function drawDiamond() {
+            const size = 5;
+            let diamond = '';
+            
+            // Triangolo superiore (incluso il mezzo)
+            for (let i = 1; i <= size; i++) {
+                for (let k = 0; k < size - i; k++) {
+                    diamond += '  ';
+                }
+                for (let j = 0; j < i; j++) {
+                    diamond += '■ ';
+                }
+                diamond += '\n';
+            }
+            
+            // Triangolo inferiore
+            for (let i = size - 1; i >= 1; i--) {
+                for (let k = 0; k < size - i; k++) {
+                    diamond += '  ';
+                }
+                for (let j = 0; j < i; j++) {
+                    diamond += '■ ';
+                }
+                diamond += '\n';
+            }
+            
+            return diamond;
+        }
+
+        mainButton.addEventListener('click', function() {
+            switch(state) {
+                case 0:
+                    // Mostra sorpresa
+                    surpriseDiv.style.display = 'block';
+                    drawingArea.style.display = 'none';
+                    mainButton.textContent = 'Nuova Sorpresa';
+                    state = 1;
+                    break;
+                case 1:
+                    // Alert
+                    alert('TADAAAA!');
+                    mainButton.textContent = 'E ora un bel disegno';
+                    state = 2;
+                    break;
+                case 2:
+                    // Mostra disegni
+                    surpriseDiv.style.display = 'none';
+                    drawingArea.style.display = 'block';
+                    triangleArea.textContent = drawTriangle();
+                    diamondArea.textContent = drawDiamond();
+                    mainButton.textContent = 'Torna a Capo';
+                    state = 3;
+                    break;
+                case 3:
+                    // Reset
+                    surpriseDiv.style.display = 'none';
+                    drawingArea.style.display = 'none';
+                    mainButton.textContent = 'Testo a Sorpresa';
+                    state = 0;
+                    break;
+            }
+        });
+    </script>
+</body>
+</html>
