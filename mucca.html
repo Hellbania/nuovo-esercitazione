@@ -6,86 +6,61 @@
     <title>Pagina Effetti Speciali</title>
     <style>
         body {
-            background-color: #0d3d2e;
-            color: #f5f5f5;
-            font-family: 'Georgia', serif;
+            background-color: darkorange;
+            color: GhostWhite;
+            font-family: Arial, sans-serif;
             padding: 20px;
         }
         .container {
             max-width: 800px;
             margin: 0 auto;
-            background: linear-gradient(135deg, #1a5445 0%, #0d3d2e 100%);
-            padding: 40px;
-            border-radius: 3px;
-            box-shadow: 0 8px 32px rgba(212, 175, 55, 0.2);
-            border: 1px solid #d4af37;
+            background-color: rgba(255,255,255,0.03);
+            padding: 30px;
+            border-radius: 10px;
         }
         h1 {
             text-align: center;
-            color: #d4af37;
+            color: GhostWhite;
             margin-bottom: 30px;
-            letter-spacing: 2px;
-            font-size: 32px;
         }
         button {
             display: block;
             margin: 30px auto;
-            padding: 15px 30px;
+            padding: 12px 24px;
             font-size: 18px;
-            background-color: #d4af37;
-            color: #0d3d2e;
+            background-color: GhostWhite;
+            color: darkorange;
             border: none;
-            border-radius: 3px;
+            border-radius: 6px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: bold;
-            letter-spacing: 1px;
-        }
-        button:hover {
-            background-color: #f4d03f;
-            transform: scale(1.05);
-            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
         }
         #surprise {
             display: none;
             text-align: center;
-            font-size: 48px;
+            font-size: 36px;
             font-weight: bold;
-            color: #d4af37;
+            color: GhostWhite;
             margin: 30px 0;
-            letter-spacing: 4px;
         }
         #drawingArea {
             display: none;
             text-align: center;
             margin: 30px 0;
         }
-        #drawingArea h2 {
-            color: #d4af37;
-            margin-top: 30px;
-            letter-spacing: 1px;
-        }
         pre {
-            background-color: #0d3d2e;
+            background-color: rgba(0,0,0,0.1);
             padding: 20px;
-            border-radius: 3px;
+            border-radius: 5px;
             font-family: 'Courier New', monospace;
             font-size: 14px;
-            line-height: 1.6;
-            color: #d4af37;
-            border: 1px solid #d4af37;
+            color: GhostWhite;
+            overflow: auto;
         }
         a {
             display: block;
             text-align: center;
             margin-top: 20px;
-            color: #d4af37;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            letter-spacing: 1px;
-        }
-        a:hover {
-            color: #f4d03f;
+            color: GhostWhite;
             text-decoration: underline;
         }
     </style>
@@ -94,14 +69,14 @@
     <div class="container">
         <h1>Pagina Effetti Speciali</h1>
         
-        <button id="mainButton">Testo a Sorpresa</button>
+        <button id="mainButton">testo a sorpresa</button>
         
         <div id="surprise">PEPPEREPE</div>
         
         <div id="drawingArea">
-            <h2>Triangolo:</h2>
+            <h2 style="color:GhostWhite">Triangolo:</h2>
             <pre id="triangle"></pre>
-            <h2>Rombo:</h2>
+            <h2 style="color:GhostWhite">Rombo:</h2>
             <pre id="diamond"></pre>
         </div>
         
@@ -110,85 +85,80 @@
 
     <script>
         let state = 0;
-        const squareSize = 2; // Larghezza modificabile dei quadratini
-        
+        const squareSize = 2; // modificabile: larghezza dei "quadratini"
+        const shapeSize = 6;  // modificabile: altezza del triangolo/rombo in blocchi
+
         const mainButton = document.getElementById('mainButton');
         const surpriseDiv = document.getElementById('surprise');
         const drawingArea = document.getElementById('drawingArea');
         const triangleArea = document.getElementById('triangle');
         const diamondArea = document.getElementById('diamond');
 
-        // Funzione per disegnare il triangolo
-        function drawTriangle() {
+        function block() {
+            return '■'.repeat(squareSize);
+        }
+
+        function drawTriangle(size) {
             let triangle = '';
-            for (let i = 1; i <= 5; i++) {
+            for (let i = 1; i <= size; i++) {
+                let row = '';
                 for (let j = 0; j < i; j++) {
-                    triangle += '■ ';
+                    row += block() + ' ';
                 }
-                triangle += '\n';
+                triangle += row.trim() + '\n';
             }
             return triangle;
         }
 
-        // Funzione per disegnare il rombo
-        function drawDiamond() {
-            const size = 5;
+        function drawDiamond(size) {
             let diamond = '';
-            
-            // Triangolo superiore (incluso il mezzo)
+            // upper including middle
             for (let i = 1; i <= size; i++) {
-                for (let k = 0; k < size - i; k++) {
-                    diamond += '  ';
-                }
+                let pad = ' '.repeat((size - i) * (squareSize + 1));
+                let row = '';
                 for (let j = 0; j < i; j++) {
-                    diamond += '■ ';
+                    row += block() + ' ';
                 }
-                diamond += '\n';
+                diamond += pad + row.trim() + '\n';
             }
-            
-            // Triangolo inferiore
+            // lower
             for (let i = size - 1; i >= 1; i--) {
-                for (let k = 0; k < size - i; k++) {
-                    diamond += '  ';
-                }
+                let pad = ' '.repeat((size - i) * (squareSize + 1));
+                let row = '';
                 for (let j = 0; j < i; j++) {
-                    diamond += '■ ';
+                    row += block() + ' ';
                 }
-                diamond += '\n';
+                diamond += pad + row.trim() + '\n';
             }
-            
             return diamond;
         }
 
         mainButton.addEventListener('click', function() {
             switch(state) {
                 case 0:
-                    // Mostra sorpresa
+                    // show surprise text
                     surpriseDiv.style.display = 'block';
                     drawingArea.style.display = 'none';
-                    mainButton.textContent = 'Nuova Sorpresa';
+                    mainButton.textContent = 'nuova sorpresa';
                     state = 1;
                     break;
                 case 1:
-                    // Alert
                     alert('TADAAAA!');
                     mainButton.textContent = 'E ora un bel disegno';
                     state = 2;
                     break;
                 case 2:
-                    // Mostra disegni
                     surpriseDiv.style.display = 'none';
                     drawingArea.style.display = 'block';
-                    triangleArea.textContent = drawTriangle();
-                    diamondArea.textContent = drawDiamond();
-                    mainButton.textContent = 'Torna a Capo';
+                    triangleArea.textContent = drawTriangle(shapeSize);
+                    diamondArea.textContent = drawDiamond(shapeSize);
+                    mainButton.textContent = 'Torna a capo';
                     state = 3;
                     break;
                 case 3:
-                    // Reset
                     surpriseDiv.style.display = 'none';
                     drawingArea.style.display = 'none';
-                    mainButton.textContent = 'Testo a Sorpresa';
+                    mainButton.textContent = 'testo a sorpresa';
                     state = 0;
                     break;
             }
